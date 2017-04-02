@@ -11,7 +11,6 @@ Description: NSudo Library
 Filename: M2.NSudo.h
 License: See License.txt in the top level directory
 Recommend Minimum Windows SDK Version: 10.0.10586
-Tips: N/A
 ******************************************************************************/
 
 #pragma once

@@ -11,7 +11,6 @@ Description: Header file for including M2-SDK
 Filename: M2.SDK.h
 License: See License.txt in the top level directory
 Recommend Minimum Windows SDK Version: 10.0.10586
-Tips: N/A
 ******************************************************************************/
 
 #pragma once

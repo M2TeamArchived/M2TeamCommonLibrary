@@ -134,6 +134,43 @@ extern "C" {
 		return (pDllModule ? LdrUnloadDll(pDllModule) : 0);
 	}
 
+	// 创建事件对象
+	static NTSTATUS WINAPI M2CreateEvent(
+			_Out_ PHANDLE phEvent,
+			_In_opt_ LPSECURITY_ATTRIBUTES lpEventAttributes,
+			_In_ BOOL bManualReset,
+			_In_ BOOL bInitialState,
+			_In_opt_ LPCWSTR lpName)
+	{
+		UNICODE_STRING NtFileName = { 0 };
+		OBJECT_ATTRIBUTES ObjectAttributes = { 0 };
+
+		M2InitObjectAttributes(&ObjectAttributes);
+
+		if (lpEventAttributes &&
+			lpEventAttributes->nLength == sizeof(SECURITY_ATTRIBUTES))
+		{
+			if (lpEventAttributes->bInheritHandle)
+				ObjectAttributes.Attributes = OBJ_INHERIT;
+			ObjectAttributes.SecurityDescriptor =
+				lpEventAttributes->lpSecurityDescriptor;
+		}
+
+		if (lpName)
+		{
+			RtlInitUnicodeString(&NtFileName, (PWSTR)lpName);
+			ObjectAttributes.ObjectName = &NtFileName;
+		}
+
+		return NtCreateEvent(
+			phEvent,
+			EVENT_ALL_ACCESS,
+			&ObjectAttributes,
+			bManualReset ? NotificationEvent : SynchronizationEvent,
+			(BOOLEAN)bInitialState);
+	}
+
+
 #ifdef __cplusplus
 }
 #endif

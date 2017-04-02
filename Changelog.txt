@@ -1,6 +1,10 @@
 ﻿M2-SDK 修订日志（简体中文）
 M2-SDK Changelog (Simplified Chinese)
 ===============================================================================
+M2-SDK 1.1 (2017-04-02)
+- 增加 M2CreateEvent 函数
+- 去除文件标头残留描述
+
 M2-SDK 1.0 (2017-03-25)
 - 合并 M2.Windows.Internal.WindowsStationAPI.h 入 M2.Windows.h
 - 合并 M2.Windows.Internal.NativeAPI.h 入 M2.Windows.h
