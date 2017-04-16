@@ -57,13 +57,11 @@ extern "C" {
 		_In_ TOKEN_TYPE TokenType,
 		_Outptr_ PHANDLE phNewToken)
 	{
-		OBJECT_ATTRIBUTES ObjectAttributes;
-		SECURITY_QUALITY_OF_SERVICE SQOS;
-
-		M2InitObjectAttributes(
-			&ObjectAttributes, nullptr, 0, nullptr, nullptr, &SQOS);
-		M2InitSecurityQuailtyOfService(
-			&SQOS, ImpersonationLevel, FALSE, FALSE);
+		SECURITY_QUALITY_OF_SERVICE SQOS = M2InitSecurityQuailtyOfService(
+			ImpersonationLevel, FALSE, FALSE);
+		OBJECT_ATTRIBUTES ObjectAttributes = M2InitObjectAttributes(
+			nullptr, 0, nullptr, nullptr, &SQOS);
+		
 		if (lpTokenAttributes &&
 			lpTokenAttributes->nLength == sizeof(SECURITY_ATTRIBUTES))
 		{
@@ -95,13 +93,11 @@ extern "C" {
 		_In_ BOOL bInheritHandle,
 		_In_ DWORD dwProcessId)
 	{
-		OBJECT_ATTRIBUTES ObjectAttributes;
-		CLIENT_ID ClientID;
+		OBJECT_ATTRIBUTES ObjectAttributes = M2InitObjectAttributes();
+		CLIENT_ID ClientID = M2InitClientID(dwProcessId, 0);
 
-		M2InitObjectAttributes(&ObjectAttributes);
 		ObjectAttributes.Attributes =
 			(ULONG)(bInheritHandle ? OBJ_INHERIT : 0);
-		M2InitClientID(&ClientID, dwProcessId, 0);
 
 		return NtOpenProcess(
 			phProcess, dwDesiredAccess, &ObjectAttributes, &ClientID);
@@ -1023,19 +1019,19 @@ extern "C" {
 		HANDLE HandleList[6] = { nullptr };
 
 		// 获取ntdll.dll地址
-		RtlInitUnicodeString(&usNTDLL, const_cast<PWSTR>(L"ntdll.dll"));
+		usNTDLL = M2InitUnicodeString(const_cast<PWSTR>(L"ntdll.dll"));
 		status = LdrGetDllHandleEx(0, nullptr, nullptr, &usNTDLL, &pNTDLL);
 		if (!NT_SUCCESS(status)) goto FuncEnd;
 
 		// 获取NtCreateLowBoxToken地址
-		RtlInitAnsiString(&asFuncName, "NtCreateLowBoxToken");
+		asFuncName = M2InitString("NtCreateLowBoxToken");
 		status = LdrGetProcedureAddress(
 			pNTDLL, &asFuncName, 0,
 			reinterpret_cast<PVOID*>(&pNtCreateLowBoxToken));
 		if (!NT_SUCCESS(status)) goto FuncEnd;
 
 		// 获取NtCreateDirectoryObjectEx地址
-		RtlInitAnsiString(&asFuncName, "NtCreateDirectoryObjectEx");
+		asFuncName = M2InitString("NtCreateDirectoryObjectEx");
 		status = LdrGetProcedureAddress(
 			pNTDLL, &asFuncName, 0,
 			reinterpret_cast<PVOID*>(&pNtCreateDirectoryObjectEx));
@@ -1062,11 +1058,11 @@ extern "C" {
 				Buffer, sizeof(Buffer),
 				L"\\Sessions\\%ld\\BaseNamedObjects", TokenSessionID);
 
-			RtlInitUnicodeString(&usBNO, Buffer);
+			usBNO = M2InitUnicodeString(Buffer);
 		}
 
 		// 初始化用于打开BaseNamedObjects目录对象的OBJECT_ATTRIBUTES结构
-		M2InitObjectAttributes(&ObjectAttributes, &usBNO);
+		ObjectAttributes = M2InitObjectAttributes(&usBNO);
 
 		// 打开BaseNamedObjects目录对象
 		status = NtOpenDirectoryObject(
@@ -1130,10 +1126,10 @@ extern "C" {
 			L"\\Sessions\\%ld\\AppContainerNamedObjects", TokenSessionID);
 
 		// 初始化AppContainerNamedObjects对象目录路径UNICODE_STRING结构
-		RtlInitUnicodeString(&usACNO, Buffer);
+		usACNO = M2InitUnicodeString(Buffer);
 
 		// 初始化用于打开AppContainerNamedObjects目录对象的OBJECT_ATTRIBUTES结构
-		M2InitObjectAttributes(&ObjectAttributes, &usACNO);
+		ObjectAttributes = M2InitObjectAttributes(&usACNO);
 
 		// 打开AppContainerNamedObjects目录对象
 		status = NtOpenDirectoryObject(
@@ -1144,8 +1140,7 @@ extern "C" {
 		if (!NT_SUCCESS(status)) goto FuncEnd;
 
 		// 初始化用于创建AppContainer目录对象的OBJECT_ATTRIBUTES结构
-		M2InitObjectAttributes(
-			&ObjectAttributes,
+		ObjectAttributes = M2InitObjectAttributes(
 			&usAppContainerSID,
 			OBJ_INHERIT | OBJ_OPENIF,
 			hAppContainerNamedObjects,
@@ -1168,7 +1163,7 @@ extern "C" {
 		if (!NT_SUCCESS(status)) goto FuncEnd;
 
 		// 初始化用于打开RPC Control目录对象的OBJECT_ATTRIBUTES结构
-		M2InitObjectAttributes(&ObjectAttributes, &usRpcControl);
+		ObjectAttributes = M2InitObjectAttributes(&usRpcControl);
 
 		// 打开RPC Control目录对象
 		status = NtOpenDirectoryObject(
@@ -1178,8 +1173,7 @@ extern "C" {
 		if (!NT_SUCCESS(status)) goto FuncEnd;
 
 		// 初始化用于创建AppContainer RPC Control目录对象的OBJECT_ATTRIBUTES结构
-		M2InitObjectAttributes(
-			&ObjectAttributes,
+		ObjectAttributes = M2InitObjectAttributes(
 			&usRpcControl2,
 			OBJ_INHERIT | OBJ_OPENIF,
 			HandleList[SuAppContainerHandleList::RootDirectory],
@@ -1209,11 +1203,10 @@ extern "C" {
 			usAppContainerSID.Buffer, usAppContainerSID.Length);
 
 		// 初始化AppContainer目录对象的UNICODE_STRING结构
-		RtlInitUnicodeString(&usRootDirectory, Buffer);
+		usRootDirectory = M2InitUnicodeString(Buffer);
 
 		// 初始化用于创建Global符号链接对象的OBJECT_ATTRIBUTES结构
-		M2InitObjectAttributes(
-			&ObjectAttributes,
+		ObjectAttributes = M2InitObjectAttributes(
 			&usGlobal,
 			OBJ_INHERIT | OBJ_OPENIF,
 			HandleList[SuAppContainerHandleList::RootDirectory],
@@ -1228,8 +1221,7 @@ extern "C" {
 		if (!NT_SUCCESS(status)) goto FuncEnd;
 
 		// 初始化用于创建Local符号链接对象的OBJECT_ATTRIBUTES结构
-		M2InitObjectAttributes(
-			&ObjectAttributes,
+		ObjectAttributes = M2InitObjectAttributes(
 			&usLocal,
 			OBJ_INHERIT | OBJ_OPENIF,
 			HandleList[SuAppContainerHandleList::RootDirectory],
@@ -1244,8 +1236,7 @@ extern "C" {
 		if (!NT_SUCCESS(status)) goto FuncEnd;
 
 		// 初始化用于创建Session符号链接对象的OBJECT_ATTRIBUTES结构
-		M2InitObjectAttributes(
-			&ObjectAttributes,
+		ObjectAttributes = M2InitObjectAttributes(
 			&usSession,
 			OBJ_INHERIT | OBJ_OPENIF,
 			HandleList[SuAppContainerHandleList::RootDirectory],
@@ -1286,11 +1277,10 @@ extern "C" {
 		}
 
 		// 初始化AppContainer命名管道UNICODE_STRING结构
-		RtlInitUnicodeString(&usNamedPipe, Buffer);
+		usNamedPipe = M2InitUnicodeString(Buffer);
 
 		// 初始化创建AppContainer命名管道的OBJECT_ATTRIBUTES结构
-		M2InitObjectAttributes(
-			&ObjectAttributes,
+		ObjectAttributes = M2InitObjectAttributes(
 			&usNamedPipe,
 			OBJ_INHERIT | OBJ_CASE_INSENSITIVE,
 			nullptr,

@@ -20,162 +20,179 @@ Tips: N/A
 #define _M2_BASE_
 
 #ifdef __cplusplus
-extern "C" {
-#endif
 
-	// 初始化OBJECT_ATTRIBUTES结构
-	inline void M2InitObjectAttributes(
-		_Out_ POBJECT_ATTRIBUTES ObjectAttributes,
-		_In_ PUNICODE_STRING ObjectName = nullptr,
-		_In_ ULONG Attributes = 0,
-		_In_ HANDLE RootDirectory = nullptr,
-		_In_ PVOID SecurityDescriptor = nullptr,
-		_In_ PVOID SecurityQualityOfService = nullptr)
+// 初始化OBJECT_ATTRIBUTES结构
+inline OBJECT_ATTRIBUTES M2InitObjectAttributes(
+	_In_ PUNICODE_STRING ObjectName = nullptr,
+	_In_ ULONG Attributes = 0,
+	_In_ HANDLE RootDirectory = nullptr,
+	_In_ PVOID SecurityDescriptor = nullptr,
+	_In_ PVOID SecurityQualityOfService = nullptr)
+{
+	return OBJECT_ATTRIBUTES
 	{
-		ObjectAttributes->Length = sizeof(OBJECT_ATTRIBUTES);
-		ObjectAttributes->RootDirectory = RootDirectory;
-		ObjectAttributes->Attributes = Attributes;
-		ObjectAttributes->ObjectName = ObjectName;
-		ObjectAttributes->SecurityDescriptor = SecurityDescriptor;
-		ObjectAttributes->SecurityQualityOfService = SecurityQualityOfService;
-	}
-
-	// 初始化SECURITY_QUALITY_OF_SERVICE结构
-	inline void M2InitSecurityQuailtyOfService(
-		_Out_ PSECURITY_QUALITY_OF_SERVICE SecurityQuailtyOfService,
-		_In_ SECURITY_IMPERSONATION_LEVEL ImpersonationLevel,
-		_In_ SECURITY_CONTEXT_TRACKING_MODE ContextTrackingMode,
-		_In_ BOOLEAN EffectiveOnly)
-	{
-		SecurityQuailtyOfService->Length = sizeof(SECURITY_QUALITY_OF_SERVICE);
-		SecurityQuailtyOfService->ImpersonationLevel = ImpersonationLevel;
-		SecurityQuailtyOfService->ContextTrackingMode = ContextTrackingMode;
-		SecurityQuailtyOfService->EffectiveOnly = EffectiveOnly;
-	}
-
-	// 初始化CLIENT_ID结构
-	inline void M2InitClientID(
-		_Out_ PCLIENT_ID ClientID,
-		_In_opt_ DWORD ProcessID,
-		_In_opt_ DWORD ThreadID)
-	{
-		ClientID->UniqueProcess = UlongToHandle(ProcessID);
-		ClientID->UniqueThread = UlongToHandle(ThreadID);
-	}
-
-	// 获取KUSER_SHARED_DATA结构
-	inline PKUSER_SHARED_DATA M2GetKUserSharedData()
-	{
-		return ((PKUSER_SHARED_DATA const)0x7ffe0000);
-	}
-
-	// 获取当前系统会话号
-	inline DWORD M2GetCurrentSessionID()
-	{
-		return M2GetKUserSharedData()->ActiveConsoleId;
-	}
-
-	// GetLastError()的未公开内联实现
-	inline DWORD M2GetLastError()
-	{
-		return NtCurrentTeb()->LastErrorValue;
-	}
-
-	// SetLastError()的未公开内联实现
-	inline VOID M2SetLastError(_In_ DWORD dwErrCode)
-	{
-		if (NtCurrentTeb()->LastErrorValue != dwErrCode)
-			NtCurrentTeb()->LastErrorValue = dwErrCode;
-	}
-
-	// 在默认堆上分配内存
-	FORCEINLINE PVOID M2HeapAlloc(
-		_In_ SIZE_T Size)
-	{
-		return RtlAllocateHeap(RtlProcessHeap(), 0, Size);
-	}
-
-	// 在默认堆上释放内存
-	FORCEINLINE VOID M2HeapFree(
-		_In_ PVOID BaseAddress)
-	{
-		RtlFreeHeap(RtlProcessHeap(), 0, BaseAddress);
-	}
-
-	// 分配初始化为零的内存
-	FORCEINLINE PVOID M2AllocZeroedMemory(
-		_In_ size_t Size)
-	{
-		return RtlAllocateHeap(RtlProcessHeap(), HEAP_ZERO_MEMORY, Size);
-	}
-
-	// 通过直接访问PEB结构获取当前进程模块,以替代GetModuleHandleW(NULL)
-	FORCEINLINE HMODULE M2GetCurrentModuleHandle()
-	{
-		return reinterpret_cast<HMODULE>(NtCurrentPeb()->ImageBaseAddress);
-	}
-
-	// 加载dll
-	inline NTSTATUS M2LoadDll(
-		_In_ LPCWSTR lpDllName,
-		_Out_ PVOID &pDllModule)
-	{
-		UNICODE_STRING usDllName = { 0 };
-		RtlInitUnicodeString(&usDllName, const_cast<PWSTR>(lpDllName));
-
-		return LdrLoadDll(
-			nullptr, nullptr, &usDllName, &pDllModule);
-	}
-
-	// 卸载dll
-	inline NTSTATUS M2UnloadDll(
-		_In_ PVOID pDllModule)
-	{
-		return (pDllModule ? LdrUnloadDll(pDllModule) : 0);
-	}
-
-	// 创建事件对象
-	static NTSTATUS WINAPI M2CreateEvent(
-			_Out_ PHANDLE phEvent,
-			_In_opt_ LPSECURITY_ATTRIBUTES lpEventAttributes,
-			_In_ BOOL bManualReset,
-			_In_ BOOL bInitialState,
-			_In_opt_ LPCWSTR lpName)
-	{
-		UNICODE_STRING NtFileName = { 0 };
-		OBJECT_ATTRIBUTES ObjectAttributes = { 0 };
-
-		M2InitObjectAttributes(&ObjectAttributes);
-
-		if (lpEventAttributes &&
-			lpEventAttributes->nLength == sizeof(SECURITY_ATTRIBUTES))
-		{
-			if (lpEventAttributes->bInheritHandle)
-				ObjectAttributes.Attributes = OBJ_INHERIT;
-			ObjectAttributes.SecurityDescriptor =
-				lpEventAttributes->lpSecurityDescriptor;
-		}
-
-		if (lpName)
-		{
-			RtlInitUnicodeString(&NtFileName, (PWSTR)lpName);
-			ObjectAttributes.ObjectName = &NtFileName;
-		}
-
-		return NtCreateEvent(
-			phEvent,
-			EVENT_ALL_ACCESS,
-			&ObjectAttributes,
-			bManualReset ? NotificationEvent : SynchronizationEvent,
-			(BOOLEAN)bInitialState);
-	}
-
-
-#ifdef __cplusplus
+		sizeof(OBJECT_ATTRIBUTES),
+		RootDirectory,
+		ObjectName,
+		Attributes,
+		SecurityDescriptor,
+		SecurityQualityOfService
+	};
 }
-#endif
 
-#ifdef __cplusplus
+// 初始化SECURITY_QUALITY_OF_SERVICE结构
+inline SECURITY_QUALITY_OF_SERVICE M2InitSecurityQuailtyOfService(
+	_In_ SECURITY_IMPERSONATION_LEVEL ImpersonationLevel,
+	_In_ SECURITY_CONTEXT_TRACKING_MODE ContextTrackingMode,
+	_In_ BOOLEAN EffectiveOnly)
+{
+	return SECURITY_QUALITY_OF_SERVICE
+	{
+		sizeof(SECURITY_QUALITY_OF_SERVICE),
+		ImpersonationLevel,
+		ContextTrackingMode,
+		EffectiveOnly
+	};
+}
+
+// 初始化CLIENT_ID结构
+inline CLIENT_ID M2InitClientID(
+	_In_opt_ DWORD ProcessID,
+	_In_opt_ DWORD ThreadID)
+{
+	return CLIENT_ID
+	{
+		UlongToHandle(ProcessID),
+		UlongToHandle(ThreadID)
+	};
+}
+
+// 初始化UNICODE_STRING结构
+inline UNICODE_STRING M2InitUnicodeString(
+	_In_opt_ PWSTR SourceString)
+{
+	return UNICODE_STRING
+	{
+		(USHORT)(SourceString ? wcslen(SourceString) * sizeof(WCHAR) : 0),
+		(USHORT)(SourceString ? (wcslen(SourceString) + 1) * sizeof(WCHAR) : 0),
+		SourceString
+	};
+}
+
+inline STRING M2InitString(
+	_In_opt_ PSTR SourceString)
+{
+	return STRING
+	{
+		(USHORT)(SourceString ? strlen(SourceString) * sizeof(WCHAR) : 0),
+		(USHORT)(SourceString ? (strlen(SourceString) + 1) * sizeof(WCHAR) : 0),
+		SourceString
+	};
+}
+
+// 获取KUSER_SHARED_DATA结构
+inline PKUSER_SHARED_DATA M2GetKUserSharedData()
+{
+	return ((PKUSER_SHARED_DATA const)0x7ffe0000);
+}
+
+// 获取当前系统会话号
+inline DWORD M2GetCurrentSessionID()
+{
+	return M2GetKUserSharedData()->ActiveConsoleId;
+}
+
+// GetLastError()的未公开内联实现
+inline DWORD M2GetLastError()
+{
+	return NtCurrentTeb()->LastErrorValue;
+}
+
+// SetLastError()的未公开内联实现
+inline VOID M2SetLastError(_In_ DWORD dwErrCode)
+{
+	if (NtCurrentTeb()->LastErrorValue != dwErrCode)
+		NtCurrentTeb()->LastErrorValue = dwErrCode;
+}
+
+// 在默认堆上分配内存
+FORCEINLINE PVOID M2HeapAlloc(
+	_In_ SIZE_T Size)
+{
+	return RtlAllocateHeap(RtlProcessHeap(), 0, Size);
+}
+
+// 在默认堆上释放内存
+FORCEINLINE VOID M2HeapFree(
+	_In_ PVOID BaseAddress)
+{
+	RtlFreeHeap(RtlProcessHeap(), 0, BaseAddress);
+}
+
+// 分配初始化为零的内存
+FORCEINLINE PVOID M2AllocZeroedMemory(
+	_In_ size_t Size)
+{
+	return RtlAllocateHeap(RtlProcessHeap(), HEAP_ZERO_MEMORY, Size);
+}
+
+// 通过直接访问PEB结构获取当前进程模块,以替代GetModuleHandleW(NULL)
+FORCEINLINE HMODULE M2GetCurrentModuleHandle()
+{
+	return reinterpret_cast<HMODULE>(NtCurrentPeb()->ImageBaseAddress);
+}
+
+// 加载dll
+inline NTSTATUS M2LoadDll(
+	_In_ LPCWSTR lpDllName,
+	_Out_ PVOID &pDllModule)
+{
+	UNICODE_STRING usDllName = 
+		M2InitUnicodeString(const_cast<PWSTR>(lpDllName));
+
+	return LdrLoadDll(
+		nullptr, nullptr, &usDllName, &pDllModule);
+}
+
+// 卸载dll
+inline NTSTATUS M2UnloadDll(
+	_In_ PVOID pDllModule)
+{
+	return (pDllModule ? LdrUnloadDll(pDllModule) : 0);
+}
+
+// 创建事件对象
+static NTSTATUS WINAPI M2CreateEvent(
+	_Out_ PHANDLE phEvent,
+	_In_opt_ LPSECURITY_ATTRIBUTES lpEventAttributes,
+	_In_ BOOL bManualReset,
+	_In_ BOOL bInitialState,
+	_In_opt_ LPCWSTR lpName)
+{
+	OBJECT_ATTRIBUTES ObjectAttributes = M2InitObjectAttributes();
+
+	if (lpEventAttributes &&
+		lpEventAttributes->nLength == sizeof(SECURITY_ATTRIBUTES))
+	{
+		if (lpEventAttributes->bInheritHandle)
+			ObjectAttributes.Attributes = OBJ_INHERIT;
+		ObjectAttributes.SecurityDescriptor =
+			lpEventAttributes->lpSecurityDescriptor;
+	}
+
+	if (lpName)
+	{
+		UNICODE_STRING NtFileName = M2InitUnicodeString((PWSTR)lpName);
+		ObjectAttributes.ObjectName = &NtFileName;
+	}
+
+	return NtCreateEvent(
+		phEvent,
+		EVENT_ALL_ACCESS,
+		&ObjectAttributes,
+		bManualReset ? NotificationEvent : SynchronizationEvent,
+		(BOOLEAN)bInitialState);
+}
 
 namespace M2
 {
@@ -258,8 +275,7 @@ namespace M2
 		_In_ LPSTR lpFuncName,
 		_Out_ FuncType &pFuncAddress)
 	{
-		ANSI_STRING asFuncName = { 0 };
-		RtlInitAnsiString(&asFuncName, lpFuncName);
+		ANSI_STRING asFuncName = M2InitString( lpFuncName);
 
 		return LdrGetProcedureAddress(
 			lpDllModule, &asFuncName, 0,
@@ -305,11 +321,10 @@ extern "C" {
 	*/
 	FORCEINLINE INT EnablePerMonitorDialogScaling()
 	{
-		UNICODE_STRING usDllName = { 0 };
+		UNICODE_STRING usDllName = 
+			M2InitUnicodeString(const_cast<PWSTR>(L"user32.dll"));
 		PVOID pDllHandle = nullptr;
 		PFN_EnablePerMonitorDialogScaling pFunc = nullptr;
-
-		RtlInitUnicodeString(&usDllName, const_cast<PWSTR>(L"user32.dll"));
 
 		if (!NT_SUCCESS(LdrGetDllHandleEx(
 			0, nullptr, nullptr, &usDllName, &pDllHandle)))
@@ -336,13 +351,11 @@ extern "C" {
 		_In_ HWND hWnd,
 		_In_ BOOL bEnable)
 	{
-		UNICODE_STRING usDllName = { 0 };
-		ANSI_STRING asFuncName = { 0 };
+		UNICODE_STRING usDllName = 
+			M2InitUnicodeString(const_cast<PWSTR>(L"user32.dll"));
+		ANSI_STRING asFuncName = M2InitString("EnableChildWindowDpiMessage");
 		PVOID pDllHandle = nullptr;
 		PFN_EnableChildWindowDpiMessage pFunc = nullptr;
-
-		RtlInitUnicodeString(&usDllName, const_cast<PWSTR>(L"user32.dll"));
-		RtlInitAnsiString(&asFuncName, "EnableChildWindowDpiMessage");
 
 		if (!NT_SUCCESS(LdrGetDllHandleEx(
 			0, nullptr, nullptr, &usDllName, &pDllHandle)))
@@ -366,13 +379,13 @@ extern "C" {
 		_In_ HWND hWnd,
 		_In_ BOOL bEnable)
 	{
-		UNICODE_STRING usDllName = { 0 };
-		ANSI_STRING asFuncName = { 0 };
+		UNICODE_STRING usDllName = 
+			M2InitUnicodeString(const_cast<PWSTR>(L"win32u.dll"));
+		ANSI_STRING asFuncName = 
+			M2InitString("NtUserEnableChildWindowDpiMessage");
 		PVOID pDllHandle = nullptr;
 		PFN_NtUserEnableChildWindowDpiMessage pFunc = nullptr;
 
-		RtlInitUnicodeString(&usDllName, const_cast<PWSTR>(L"win32u.dll"));
-		RtlInitAnsiString(&asFuncName, "NtUserEnableChildWindowDpiMessage");
 		if (!NT_SUCCESS(LdrGetDllHandleEx(
 			0, nullptr, nullptr, &usDllName, &pDllHandle)))
 			return -1;
