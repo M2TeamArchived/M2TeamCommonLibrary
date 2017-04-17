@@ -75,18 +75,19 @@ inline UNICODE_STRING M2InitUnicodeString(
 	{
 		(USHORT)(SourceString ? wcslen(SourceString) * sizeof(WCHAR) : 0),
 		(USHORT)(SourceString ? (wcslen(SourceString) + 1) * sizeof(WCHAR) : 0),
-		SourceString
+		SourceString ? SourceString : nullptr
 	};
 }
 
+// 初始化STRING结构
 inline STRING M2InitString(
 	_In_opt_ PSTR SourceString)
 {
 	return STRING
 	{
-		(USHORT)(SourceString ? strlen(SourceString) * sizeof(WCHAR) : 0),
-		(USHORT)(SourceString ? (strlen(SourceString) + 1) * sizeof(WCHAR) : 0),
-		SourceString
+		(USHORT)(SourceString ? strlen(SourceString) * sizeof(CHAR) : 0),
+		(USHORT)(SourceString ? (strlen(SourceString) + 1) * sizeof(CHAR) : 0),
+		SourceString ? SourceString : nullptr
 	};
 }
 
@@ -104,7 +105,7 @@ inline DWORD M2GetCurrentSessionID()
 
 // GetLastError()的未公开内联实现
 inline DWORD M2GetLastError()
-{
+{	
 	return NtCurrentTeb()->LastErrorValue;
 }
 

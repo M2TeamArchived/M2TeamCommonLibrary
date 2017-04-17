@@ -10,6 +10,8 @@ M2-SDK 1.1 (2017-04-17)
 - 添加 M2InitUnicodeString 函数
 - 添加 M2InitString 函数
 - 修复 M2CreateEvent 函数的Bug
+- 修复 M2InitUnicodeString 函数的Bug
+- 修复 M2InitString 函数的Bug
 
 M2-SDK 1.0 (2017-03-25)
 - 合并 M2.Windows.Internal.WindowsStationAPI.h 入 M2.Windows.h
