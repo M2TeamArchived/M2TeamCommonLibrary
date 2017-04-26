@@ -25,6 +25,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)M2.Windows.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)M2.PHNT.msg" />
+    <None Include="$(MSBuildThisFileDirectory)M2.Windows.PHNTPermission.msg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)M2.Base.cpp" />
   </ItemGroup>
 </Project>

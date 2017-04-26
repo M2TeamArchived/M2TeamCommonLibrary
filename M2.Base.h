@@ -162,39 +162,13 @@ inline NTSTATUS M2UnloadDll(
 	return (pDllModule ? LdrUnloadDll(pDllModule) : 0);
 }
 
-// 创建事件对象
-static NTSTATUS WINAPI M2CreateEvent(
+// 创建事件对象, 不内联考虑到大量使用本函数时实现函数复用以节约空间
+NTSTATUS WINAPI M2CreateEvent(
 	_Out_ PHANDLE phEvent,
 	_In_opt_ LPSECURITY_ATTRIBUTES lpEventAttributes,
 	_In_ BOOL bManualReset,
 	_In_ BOOL bInitialState,
-	_In_opt_ LPCWSTR lpName)
-{
-	OBJECT_ATTRIBUTES ObjectAttributes = M2InitObjectAttributes();
-	UNICODE_STRING NtFileName;
-
-	if (lpEventAttributes &&
-		lpEventAttributes->nLength == sizeof(SECURITY_ATTRIBUTES))
-	{
-		if (lpEventAttributes->bInheritHandle)
-			ObjectAttributes.Attributes = OBJ_INHERIT;
-		ObjectAttributes.SecurityDescriptor =
-			lpEventAttributes->lpSecurityDescriptor;
-	}
-
-	if (lpName)
-	{
-		NtFileName = M2InitUnicodeString((PWSTR)lpName);
-		ObjectAttributes.ObjectName = &NtFileName;
-	}
-
-	return NtCreateEvent(
-		phEvent,
-		EVENT_ALL_ACCESS,
-		&ObjectAttributes,
-		bManualReset ? NotificationEvent : SynchronizationEvent,
-		(BOOLEAN)bInitialState);
-}
+	_In_opt_ LPCWSTR lpName);
 
 namespace M2
 {
