@@ -17,38 +17,41 @@ Tips: N/A
 #include "M2.Windows.h" // Windows API 基本定义
 #include "M2.Base.h" // M2-SDK 基本定义
 
-// 创建事件对象, 不内联考虑到大量使用本函数时实现函数复用以节约空间
-NTSTATUS WINAPI M2CreateEvent(
-	_Out_ PHANDLE phEvent,
-	_In_opt_ LPSECURITY_ATTRIBUTES lpEventAttributes,
-	_In_ BOOL bManualReset,
-	_In_ BOOL bInitialState,
-	_In_opt_ LPCWSTR lpName)
+namespace M2
 {
-	OBJECT_ATTRIBUTES ObjectAttributes;
-	UNICODE_STRING NtFileName;
-
-	M2InitObjectAttributes(ObjectAttributes);
-
-	if (lpEventAttributes &&
-		lpEventAttributes->nLength == sizeof(SECURITY_ATTRIBUTES))
+	// 创建事件对象, 不内联考虑到大量使用本函数时实现函数复用以节约空间
+	NTSTATUS WINAPI M2CreateEvent(
+		_Out_ PHANDLE phEvent,
+		_In_opt_ LPSECURITY_ATTRIBUTES lpEventAttributes,
+		_In_ BOOL bManualReset,
+		_In_ BOOL bInitialState,
+		_In_opt_ LPCWSTR lpName)
 	{
-		if (lpEventAttributes->bInheritHandle)
-			ObjectAttributes.Attributes = OBJ_INHERIT;
-		ObjectAttributes.SecurityDescriptor =
-			lpEventAttributes->lpSecurityDescriptor;
-	}
+		OBJECT_ATTRIBUTES ObjectAttributes;
+		UNICODE_STRING NtFileName;
 
-	if (lpName)
-	{
-		M2InitUnicodeString(NtFileName, (PWSTR)lpName);
-		ObjectAttributes.ObjectName = &NtFileName;
-	}
+		M2InitObjectAttributes(ObjectAttributes);
 
-	return NtCreateEvent(
-		phEvent,
-		EVENT_ALL_ACCESS,
-		&ObjectAttributes,
-		bManualReset ? NotificationEvent : SynchronizationEvent,
-		(BOOLEAN)bInitialState);
+		if (lpEventAttributes &&
+			lpEventAttributes->nLength == sizeof(SECURITY_ATTRIBUTES))
+		{
+			if (lpEventAttributes->bInheritHandle)
+				ObjectAttributes.Attributes = OBJ_INHERIT;
+			ObjectAttributes.SecurityDescriptor =
+				lpEventAttributes->lpSecurityDescriptor;
+		}
+
+		if (lpName)
+		{
+			M2InitUnicodeString(NtFileName, (PWSTR)lpName);
+			ObjectAttributes.ObjectName = &NtFileName;
+		}
+
+		return NtCreateEvent(
+			phEvent,
+			EVENT_ALL_ACCESS,
+			&ObjectAttributes,
+			bManualReset ? NotificationEvent : SynchronizationEvent,
+			(BOOLEAN)bInitialState);
+	}
 }

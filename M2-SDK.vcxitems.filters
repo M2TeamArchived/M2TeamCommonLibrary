@@ -2,14 +2,14 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)M2.SDK.h" />
-    <ClInclude Include="C:\Users\Mouri\Desktop\Projects\M2-SDK\M2.Base.h">
+    <ClInclude Include="F:\Projects\M2-SDK\M2.Base.h">
       <Filter>M2.Base</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\Mouri\Desktop\Projects\M2-SDK\M2.Windows.h">
-      <Filter>M2.Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\Mouri\Desktop\Projects\M2-SDK\M2.NSudo.h">
+    <ClInclude Include="F:\Projects\M2-SDK\M2.NSudo.h">
       <Filter>M2.NSudo</Filter>
+    </ClInclude>
+    <ClInclude Include="F:\Projects\M2-SDK\M2.Windows.h">
+      <Filter>M2.Windows</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -35,12 +35,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="C:\Users\Mouri\Desktop\Projects\M2-SDK\M2.Base.cpp">
+    <ClCompile Include="F:\Projects\M2-SDK\M2.Base.cpp">
       <Filter>M2.Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="C:\Users\Mouri\Desktop\Projects\M2-SDK\M2.Windows.PHNTPermission.msg">
+    <None Include="F:\Projects\M2-SDK\M2.Windows.PHNTPermission.msg">
       <Filter>M2.Windows</Filter>
     </None>
   </ItemGroup>

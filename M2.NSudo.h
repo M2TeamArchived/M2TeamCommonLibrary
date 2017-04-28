@@ -1025,7 +1025,7 @@ extern "C" {
 		HANDLE HandleList[6] = { nullptr };
 
 		// 获取ntdll.dll地址
-		M2InitUnicodeString(usNTDLL, const_cast<PWSTR>(L"ntdll.dll"));
+		M2InitUnicodeString(usNTDLL, L"ntdll.dll");
 		status = LdrGetDllHandleEx(0, nullptr, nullptr, &usNTDLL, &pNTDLL);
 		if (!NT_SUCCESS(status)) goto FuncEnd;
 
@@ -1458,14 +1458,15 @@ extern "C" {
 		NTSTATUS status = STATUS_SUCCESS;
 		CLRCreateInstanceFnPtr pCLRCreateInstance = nullptr;
 
-		status = M2LoadDll(L"mscoree.dll", pDllModule);
+		status = M2LoadModule(pDllModule, L"mscoree.dll");
 		if (!NT_SUCCESS(status))
 		{
 			hr = __HRESULT_FROM_WIN32(RtlNtStatusToDosError(status));
 			goto Cleanup;
 		}
 
-		status = M2GetFunc(pDllModule, "CLRCreateInstance", pCLRCreateInstance);
+		status = M2GetProcedureAddress(
+			pCLRCreateInstance, pDllModule, "CLRCreateInstance");
 		if (!NT_SUCCESS(status))
 		{
 			hr = __HRESULT_FROM_WIN32(RtlNtStatusToDosError(status));
@@ -1559,7 +1560,7 @@ extern "C" {
 
 		if (pDllModule)
 		{
-			M2UnloadDll(pDllModule);
+			M2FreeModule(pDllModule);
 			pDllModule = nullptr;
 		}
 

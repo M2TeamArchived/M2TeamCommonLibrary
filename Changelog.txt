@@ -7,14 +7,20 @@ M2-SDK 1.2 (2017-04-28)
 - 修改 M2InitObjectAttributes 定义
 - 修改 M2InitSecurityQuailtyOfService 定义
 - 修改 M2InitClientID 定义
-- 移除 M2InitUnicodeString
-- 移除 M2InitString 定义
-- 添加 M2InitUnicodeString 宏
-- 添加 M2InitString 宏
-- 添加 M2InitNtConstantString 宏
-- 添加一个 M2LoadDll 函数实例
-- 添加 M2GetDllHandle 函数
+- 修改 M2InitUnicodeString 定义
+- 修改 M2InitString 定义
 - 整理解决方案文件
+- M2.Base头文件所有函数移入M2命名空间下
+- 移除 M2LoadDll 函数
+- 移除 M2UnloadDll 函数
+- 移除 M2GetFunc 函数
+- 添加 M2LoadModule 函数
+- 添加 M2FreeModule 函数
+- 添加 M2GetModuleHandle 函数
+- 添加 M2GetProcedureAddress 函数
+- 修改 EnablePerMonitorDialogScaling
+- 修改 EnableChildWindowDpiMessage
+- 修改 NtUserEnableChildWindowDpiMessage
 
 M2-SDK 1.1 (2017-04-17)
 - 增加 M2CreateEvent 函数
