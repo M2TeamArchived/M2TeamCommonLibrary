@@ -3,12 +3,8 @@
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)M2.SDK.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)M2.NSudo.h" />
-    <ClInclude Include="C:\Users\Mouri\Desktop\Projects\M2-SDK\M2.Windows.h">
-      <Filter>M2.Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\Mouri\Desktop\Projects\M2-SDK\M2.Base.h">
-      <Filter>M2.Base</Filter>
-    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)M2.Base.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)M2.Windows.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="$(MSBuildThisFileDirectory)License.txt" />
@@ -24,13 +20,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="C:\Users\Mouri\Desktop\Projects\M2-SDK\M2.Windows.PHNTPermission.msg">
-      <Filter>M2.Windows</Filter>
-    </None>
+    <None Include="$(MSBuildThisFileDirectory)M2.Windows.PHNTPermission.msg" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="C:\Users\Mouri\Desktop\Projects\M2-SDK\M2.Base.cpp">
-      <Filter>M2.Base</Filter>
-    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)M2.Base.cpp" />
   </ItemGroup>
 </Project>
