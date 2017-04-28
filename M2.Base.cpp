@@ -25,8 +25,10 @@ NTSTATUS WINAPI M2CreateEvent(
 	_In_ BOOL bInitialState,
 	_In_opt_ LPCWSTR lpName)
 {
-	OBJECT_ATTRIBUTES ObjectAttributes = M2InitObjectAttributes();
+	OBJECT_ATTRIBUTES ObjectAttributes;
 	UNICODE_STRING NtFileName;
+
+	M2InitObjectAttributes(ObjectAttributes);
 
 	if (lpEventAttributes &&
 		lpEventAttributes->nLength == sizeof(SECURITY_ATTRIBUTES))
@@ -39,7 +41,7 @@ NTSTATUS WINAPI M2CreateEvent(
 
 	if (lpName)
 	{
-		NtFileName = M2InitUnicodeString((PWSTR)lpName);
+		M2InitUnicodeString(NtFileName, (PWSTR)lpName);
 		ObjectAttributes.ObjectName = &NtFileName;
 	}
 

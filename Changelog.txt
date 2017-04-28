@@ -1,9 +1,19 @@
 ﻿M2-SDK 修订日志（简体中文）
 M2-SDK Changelog (Simplified Chinese)
 ===============================================================================
-M2-SDK 1.2 (2017-04-26)
+M2-SDK 1.2 (2017-04-28)
 - M2.PHNT.msg 改名为 M2.Windows.PHNTPermission.msg
 - 对 M2CreateEvent 函数禁用内联以实现函数复用以节约空间
+- 修改 M2InitObjectAttributes 定义
+- 修改 M2InitSecurityQuailtyOfService 定义
+- 修改 M2InitClientID 定义
+- 移除 M2InitUnicodeString
+- 移除 M2InitString 定义
+- 添加 M2InitUnicodeString 宏
+- 添加 M2InitString 宏
+- 添加 M2InitNtConstantString 宏
+- 添加一个 M2LoadDll 函数实例
+- 添加 M2GetDllHandle 函数
 
 M2-SDK 1.1 (2017-04-17)
 - 增加 M2CreateEvent 函数
