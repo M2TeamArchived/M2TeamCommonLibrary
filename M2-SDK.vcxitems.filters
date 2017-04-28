@@ -2,12 +2,14 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)M2.SDK.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)M2.NSudo.h" />
+    <ClInclude Include="C:\Users\Mouri\Desktop\Projects\M2-SDK\M2.Base.h">
+      <Filter>M2.Base</Filter>
+    </ClInclude>
     <ClInclude Include="C:\Users\Mouri\Desktop\Projects\M2-SDK\M2.Windows.h">
       <Filter>M2.Windows</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\Mouri\Desktop\Projects\M2-SDK\M2.Base.h">
-      <Filter>M2.Base</Filter>
+    <ClInclude Include="C:\Users\Mouri\Desktop\Projects\M2-SDK\M2.NSudo.h">
+      <Filter>M2.NSudo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -22,15 +24,24 @@
     <Filter Include="M2.Base">
       <UniqueIdentifier>{b6e89385-c75d-4fd0-84ed-a85faa670a91}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="C:\Users\Mouri\Desktop\Projects\M2-SDK\M2.Windows.PHNTPermission.msg">
-      <Filter>M2.Windows</Filter>
-    </None>
+    <Filter Include="M2.RegistryHelper">
+      <UniqueIdentifier>{2485e1c7-b52c-4ab9-a6dc-72b5355cf1a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="M2.FileIOHelper">
+      <UniqueIdentifier>{baf4028a-a0ff-4d6d-a8ba-fe9f864252a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="M2.NSudo">
+      <UniqueIdentifier>{65cd3ecc-fcf1-4dd6-ad41-e06984c8304c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C:\Users\Mouri\Desktop\Projects\M2-SDK\M2.Base.cpp">
       <Filter>M2.Base</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\Mouri\Desktop\Projects\M2-SDK\M2.Windows.PHNTPermission.msg">
+      <Filter>M2.Windows</Filter>
+    </None>
   </ItemGroup>
 </Project>

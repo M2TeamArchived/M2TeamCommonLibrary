@@ -14,6 +14,7 @@ M2-SDK 1.2 (2017-04-28)
 - 添加 M2InitNtConstantString 宏
 - 添加一个 M2LoadDll 函数实例
 - 添加 M2GetDllHandle 函数
+- 整理解决方案文件
 
 M2-SDK 1.1 (2017-04-17)
 - 增加 M2CreateEvent 函数
