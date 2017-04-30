@@ -5,11 +5,11 @@
     <ClInclude Include="F:\Projects\M2-SDK\M2.Base.h">
       <Filter>M2.Base</Filter>
     </ClInclude>
-    <ClInclude Include="F:\Projects\M2-SDK\M2.NSudo.h">
-      <Filter>M2.NSudo</Filter>
-    </ClInclude>
     <ClInclude Include="F:\Projects\M2-SDK\M2.Windows.h">
       <Filter>M2.Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="F:\Projects\M2-SDK\M2.NSudo.h">
+      <Filter>M2.NSudo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
