@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <HasSharedItems>true</HasSharedItems>
-    <ItemsProjectGuid>{45d41acc-2c3c-43d2-bc10-02aa73ffc7c7}</ItemsProjectGuid>
+    <ItemsProjectGuid>{f5293936-7405-49be-b7ab-9b6e8e5600ab}</ItemsProjectGuid>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
@@ -14,14 +14,9 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="$(MSBuildThisFileDirectory)License.txt" />
-    <Text Include="$(MSBuildThisFileDirectory)Changelog.txt" />
-    <Text Include="$(MSBuildThisFileDirectory)Readme.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)M2.Base.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)M2.SDK.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)M2.NSudo.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)M2.SDK.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)M2.Windows.h" />
   </ItemGroup>
   <ItemGroup>
@@ -29,5 +24,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)M2.Base.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="$(MSBuildThisFileDirectory)Changelog.txt" />
+    <Text Include="$(MSBuildThisFileDirectory)License.txt" />
+    <Text Include="$(MSBuildThisFileDirectory)Readme.txt" />
   </ItemGroup>
 </Project>
