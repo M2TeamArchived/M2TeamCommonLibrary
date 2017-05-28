@@ -319,6 +319,32 @@ extern "C" {
 			NtCurrentProcess(), DesiredAccess, phProcessToken);
 	}
 
+
+	/*
+	SuGetCurrentProcessSessionID获取当前进程的会话ID。
+	The SuGetCurrentProcessSessionID function obtains the Session ID of the 
+	current process.
+	*/
+	static NTSTATUS SuGetCurrentProcessSessionID(PDWORD SessionID)
+	{
+		NTSTATUS status = STATUS_SUCCESS;
+		HANDLE hToken = INVALID_HANDLE_VALUE;
+		DWORD ReturnLength = 0;
+
+		status = SuOpenCurrentProcessToken(&hToken, MAXIMUM_ALLOWED);
+		if (NT_SUCCESS(status))
+		{
+			status = NtQueryInformationToken(
+				hToken,
+				TokenSessionId, 
+				SessionID, 
+				sizeof(DWORD), 
+				&ReturnLength);
+		}
+
+		return status;
+	}
+
 	/*
 	SuSetThreadToken函数给线程分配一个模拟令牌。该函数还可以使一个线程停止使用
 	模拟令牌。
@@ -1712,6 +1738,7 @@ extern "C" {
 	{
 		NTSTATUS status = STATUS_SUCCESS;
 		DWORD dwWinLogonPID = (DWORD)-1;
+		DWORD dwSessionID = (DWORD)-1;
 		PSYSTEM_PROCESS_INFORMATION pSPI = nullptr;
 		HANDLE hProcessToken = nullptr;
 
@@ -1721,10 +1748,14 @@ extern "C" {
 			CSuProcessSnapshot Snapshot(&status);
 			if (!NT_SUCCESS(status)) break;
 
+			// 获取当前进程令牌会话ID
+			status = SuGetCurrentProcessSessionID(&dwSessionID);
+			if (!NT_SUCCESS(status)) break;
+
 			// 遍历进程寻找winlogon进程并获取PID
 			while (Snapshot.Next(&pSPI))
 			{
-				if (pSPI->SessionId != M2GetCurrentSessionID()) continue;
+				if (pSPI->SessionId != dwSessionID) continue;
 				if (pSPI->ImageName.Buffer == nullptr) continue;
 
 				if (wcscmp(L"winlogon.exe", pSPI->ImageName.Buffer) == 0)
