@@ -1,9 +1,10 @@
 ﻿M2-SDK 修订日志（简体中文）
 M2-SDK Changelog (Simplified Chinese)
 ===============================================================================
-M2-SDK 1.3 (2017-05-28)
+M2-SDK 1.3 (2017-06-02)
 - 修复解决方案文件
 - 添加 SuGetCurrentProcessSessionID 函数
+- 添加 CM2EnumProcess 迭代器
 
 M2-SDK 1.2 (2017-04-28)
 - M2.PHNT.msg 改名为 M2.Windows.PHNTPermission.msg

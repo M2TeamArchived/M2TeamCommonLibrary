@@ -1724,6 +1724,140 @@ extern "C" {
 		ULONG_PTR pTemp = 0;
 	};
 
+
+#if _MSC_VER >= 1200
+#pragma warning(push)
+#pragma warning(disable:4355) // "this": 用于基成员初始值设定项列表
+#endif
+
+	/*
+	进程列表遍历迭代器
+	Iterator for enumerate the process list
+
+	用法 Usage
+	for (auto pSPI : CM2EnumProcess(status)) { }
+
+	status 是初始化遍历返回值（可选）
+	status is the return value for initialization (Optional)
+	*/
+	class CM2EnumProcess
+	{
+	public:
+		class CM2EnumProcessIterator
+		{
+		private:
+			CM2EnumProcess* m_EnumProcess;
+
+		public:
+			FORCEINLINE CM2EnumProcessIterator(
+				_In_ CM2EnumProcess* FindFile) :
+				m_EnumProcess(FindFile)
+			{
+
+			}
+
+			FORCEINLINE ~CM2EnumProcessIterator()
+			{
+
+			}
+
+			FORCEINLINE void operator++()
+			{
+				// 如果pSPI和下个结构偏移都存在，则继续循环，否则清零
+				if (m_EnumProcess->pSPI && m_EnumProcess->pSPI->NextEntryOffset)
+				{
+					ULONG_PTR NextSPI = reinterpret_cast<ULONG_PTR>(m_EnumProcess->pSPI);
+					NextSPI += m_EnumProcess->pSPI->NextEntryOffset;
+					m_EnumProcess->pSPI = reinterpret_cast<PSYSTEM_PROCESS_INFORMATION>(NextSPI);
+				}
+				else
+				{
+					m_EnumProcess->pSPI = nullptr;
+				}
+			}
+
+			// 根据迭代器循环特性，使用不等于操作符遍历目录
+			FORCEINLINE bool operator!=(const CM2EnumProcessIterator& Item)
+			{
+				UNREFERENCED_PARAMETER(Item);
+				return (m_EnumProcess->pSPI != nullptr);
+			}
+
+			FORCEINLINE PSYSTEM_PROCESS_INFORMATION operator*()
+			{
+				return m_EnumProcess->pSPI;
+			}
+		};
+
+	private:
+		CM2EnumProcessIterator Iterator;
+		PVOID lpBuffer;
+		PSYSTEM_PROCESS_INFORMATION pSPI;
+
+	public:
+		// 初始化文件遍历, 不内联考虑到大量使用本迭代器时实现函数复用以节约空间
+		DECLSPEC_NOINLINE CM2EnumProcess(
+			_Out_ NTSTATUS* InitStatus = nullptr) :
+			Iterator(this),
+			lpBuffer(nullptr),
+			pSPI(nullptr)
+
+		{
+			NTSTATUS status = STATUS_SUCCESS;
+			DWORD dwLength = 0;
+
+			do
+			{
+				// 获取进程信息大小
+				status = NtQuerySystemInformation(
+					SystemProcessInformation,
+					nullptr,
+					0,
+					&dwLength);
+				if (status != STATUS_INFO_LENGTH_MISMATCH) break;
+
+				// 为令牌信息分配内存，如果失败则返回
+				status = M2HeapAlloc(
+					dwLength,
+					lpBuffer);
+				if (!NT_SUCCESS(status)) break;
+
+				// 获取进程信息
+				status = NtQuerySystemInformation(
+					SystemProcessInformation,
+					lpBuffer,
+					dwLength,
+					&dwLength);
+				if (!NT_SUCCESS(status)) break;
+
+				// 设置遍历开始地址
+				pSPI = reinterpret_cast<PSYSTEM_PROCESS_INFORMATION>(lpBuffer);
+
+			} while (false);
+
+			if (InitStatus) *InitStatus = status;
+		}
+
+		FORCEINLINE ~CM2EnumProcess()
+		{
+			if (lpBuffer) M2HeapFree(lpBuffer);
+		}
+
+		FORCEINLINE CM2EnumProcessIterator& begin()
+		{
+			return Iterator;
+		}
+
+		FORCEINLINE CM2EnumProcessIterator& end()
+		{
+			return Iterator;
+		}
+	};
+
+#if _MSC_VER >= 1200
+#pragma warning(pop)
+#endif
+	
 	/*
 	SuGetSystemTokenCopy函数获取一个当前会话SYSTEM用户令牌的副本。
 	The SuGetSystemTokenCopy function obtains a copy of current session SYSTEM 
@@ -1739,21 +1873,16 @@ extern "C" {
 		NTSTATUS status = STATUS_SUCCESS;
 		DWORD dwWinLogonPID = (DWORD)-1;
 		DWORD dwSessionID = (DWORD)-1;
-		PSYSTEM_PROCESS_INFORMATION pSPI = nullptr;
 		HANDLE hProcessToken = nullptr;
 
 		do
 		{
-			// 初始化进程遍历
-			CSuProcessSnapshot Snapshot(&status);
-			if (!NT_SUCCESS(status)) break;
-
 			// 获取当前进程令牌会话ID
 			status = SuGetCurrentProcessSessionID(&dwSessionID);
 			if (!NT_SUCCESS(status)) break;
 
 			// 遍历进程寻找winlogon进程并获取PID
-			while (Snapshot.Next(&pSPI))
+			for (auto pSPI : CM2EnumProcess(&status))
 			{
 				if (pSPI->SessionId != dwSessionID) continue;
 				if (pSPI->ImageName.Buffer == nullptr) continue;
@@ -1764,6 +1893,9 @@ extern "C" {
 					break;
 				}
 			}
+
+			// 如果初始化进程遍历失败，则返回错误
+			if (!NT_SUCCESS(status)) break;
 
 			// 如果没找到进程，则返回错误
 			if (dwWinLogonPID == -1)
