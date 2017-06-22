@@ -604,7 +604,7 @@ extern "C" {
 		PSID_IDENTIFIER_AUTHORITY pSidAuth = RtlIdentifierAuthoritySid(pSid);
 
 		// 如果不符合SID_IDENTIFIER_AUTHORITY结构长度，则返回false
-		if (!memcmp(pSidAuth, &SIA_NT, SIA_Length)) return false;
+		if (memcmp(pSidAuth, &SIA_NT, SIA_Length)) return false;
 
 		// 判断SID是否属于Logon SID
 		return (*RtlSubAuthorityCountSid(pSid) == SECURITY_LOGON_IDS_RID_COUNT
