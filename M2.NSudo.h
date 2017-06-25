@@ -1007,6 +1007,12 @@ extern "C" {
 		return status;
 	}
 
+#define PIPE_ALL_ACCESS (SYNCHRONIZE \
+            | STANDARD_RIGHTS_REQUIRED \
+            | PIPE_ACCESS_INBOUND \
+            | PIPE_ACCESS_OUTBOUND \
+            | PIPE_ACCESS_DUPLEX)
+
 	/*
 	SuCreateAppContainerToken函数从一个现有的访问令牌创建一个新的AppContainer访
 	问令牌。
@@ -1328,8 +1334,7 @@ extern "C" {
 		// 创建AppContainer命名管道
 		status = NtCreateFile(
 			&HandleList[SuAppContainerHandleList::NamedPipe],
-			SYNCHRONIZE | STANDARD_RIGHTS_REQUIRED |
-			FILE_WRITE_DATA | FILE_CREATE_PIPE_INSTANCE,
+			PIPE_ALL_ACCESS,
 			&ObjectAttributes,
 			&IoStatusBlock,
 			nullptr,
@@ -1341,12 +1346,15 @@ extern "C" {
 			0);
 		if (!NT_SUCCESS(status)) goto FuncEnd;
 
-		// 创建AppContainer的令牌
+		// 初始化用于创建AppContainer令牌对象的OBJECT_ATTRIBUTES结构
+		M2InitObjectAttributes(ObjectAttributes);
+
+		// 创建AppContainer令牌
 		status = pNtCreateLowBoxToken(
 			TokenHandle,
 			ExistingTokenHandle,
 			MAXIMUM_ALLOWED,
-			nullptr,
+			&ObjectAttributes,
 			SecurityCapabilities->AppContainerSid,
 			SecurityCapabilities->CapabilityCount,
 			SecurityCapabilities->Capabilities,
