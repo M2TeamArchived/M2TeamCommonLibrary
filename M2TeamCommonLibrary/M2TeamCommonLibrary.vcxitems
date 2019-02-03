@@ -16,9 +16,11 @@
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)M2BaseHelpers.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)M2CXHelpers.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)M2Win32Helpers.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)M2BaseHelpers.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)M2CXHelpers.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)M2Win32Helpers.h" />
   </ItemGroup>
 </Project>
