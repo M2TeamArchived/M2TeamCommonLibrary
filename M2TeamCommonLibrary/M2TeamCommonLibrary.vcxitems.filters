@@ -10,6 +10,9 @@
     <Filter Include="M2Win32Helpers">
       <UniqueIdentifier>{75df954e-079c-4788-ab4f-c856a74a7e13}</UniqueIdentifier>
     </Filter>
+    <Filter Include="M2Win32GUIHelpers">
+      <UniqueIdentifier>{c3376011-3a37-453f-8b61-e247c38d599a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)M2CXHelpers.cpp">
@@ -20,6 +23,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)M2Win32Helpers.cpp">
       <Filter>M2Win32Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)M2Win32GUIHelpers.cpp">
+      <Filter>M2Win32GUIHelpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -32,5 +38,16 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)M2Win32Helpers.h">
       <Filter>M2Win32Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)M2MessageDialogResource.h">
+      <Filter>M2Win32GUIHelpers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)M2Win32GUIHelpers.h">
+      <Filter>M2Win32GUIHelpers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="$(MSBuildThisFileDirectory)M2MessageDialogResource.rc">
+      <Filter>M2Win32GUIHelpers</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
