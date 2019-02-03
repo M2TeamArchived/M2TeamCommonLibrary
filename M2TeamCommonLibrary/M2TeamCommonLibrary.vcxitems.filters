@@ -22,6 +22,9 @@
     <Filter Include="MINT">
       <UniqueIdentifier>{78390f38-88c8-4b68-8465-c8bab293c8a9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="LegacyImplementations">
+      <UniqueIdentifier>{3591d6a3-24d5-4139-a102-8b037e3e6ad9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)M2CXHelpers.cpp">
@@ -38,6 +41,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)M2WinRTHelpers.cpp">
       <Filter>M2WinRTHelpers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)M2.Base.cpp">
+      <Filter>LegacyImplementations</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +70,15 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)MINT.h">
       <Filter>MINT</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)M2.Base.h">
+      <Filter>LegacyImplementations</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)M2.NSudo.h">
+      <Filter>LegacyImplementations</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)M2.SDK.h">
+      <Filter>LegacyImplementations</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

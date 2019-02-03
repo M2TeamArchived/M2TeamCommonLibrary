@@ -22,7 +22,7 @@ Recommend Minimum Windows SDK Version: 10.0.10586
 Windows API 基本定义
 Base Windows API Definitions
 */
-#include "M2.Windows.h" 
+#include "MINT.h"
 
 /*
 M2-SDK 基本定义
