@@ -14,9 +14,11 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)M2BaseHelpers.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)M2CXHelpers.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)M2BaseHelpers.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)M2CXHelpers.h" />
   </ItemGroup>
 </Project>

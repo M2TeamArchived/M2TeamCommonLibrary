@@ -4,15 +4,24 @@
     <Filter Include="M2CXHelpers">
       <UniqueIdentifier>{2e4a613e-c7eb-451b-9817-3fee11e49eb9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="M2BaseHelpers">
+      <UniqueIdentifier>{3ddd1c92-1b09-47be-a006-c1cadbbdc688}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)M2CXHelpers.cpp">
       <Filter>M2CXHelpers</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)M2BaseHelpers.cpp">
+      <Filter>M2BaseHelpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)M2CXHelpers.h">
       <Filter>M2CXHelpers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)M2BaseHelpers.h">
+      <Filter>M2BaseHelpers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
