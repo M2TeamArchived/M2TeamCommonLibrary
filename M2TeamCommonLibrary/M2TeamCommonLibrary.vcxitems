@@ -22,6 +22,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)M2BaseHelpers.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)M2BindableVectorView.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)M2CXHelpers.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)M2MessageDialogResource.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)M2Win32GUIHelpers.h" />

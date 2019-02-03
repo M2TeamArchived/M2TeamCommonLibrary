@@ -16,6 +16,9 @@
     <Filter Include="M2WinRTHelpers">
       <UniqueIdentifier>{4d531645-d79a-43b5-8917-abeb8cdacf41}</UniqueIdentifier>
     </Filter>
+    <Filter Include="M2BindableVectorView">
+      <UniqueIdentifier>{a92727ff-c07e-4599-8317-f845bd196131}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)M2CXHelpers.cpp">
@@ -52,6 +55,9 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)M2WinRTHelpers.h">
       <Filter>M2WinRTHelpers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)M2BindableVectorView.h">
+      <Filter>M2BindableVectorView</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
