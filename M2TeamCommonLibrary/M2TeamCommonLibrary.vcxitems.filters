@@ -13,6 +13,9 @@
     <Filter Include="M2Win32GUIHelpers">
       <UniqueIdentifier>{c3376011-3a37-453f-8b61-e247c38d599a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="M2WinRTHelpers">
+      <UniqueIdentifier>{4d531645-d79a-43b5-8917-abeb8cdacf41}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)M2CXHelpers.cpp">
@@ -26,6 +29,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)M2Win32GUIHelpers.cpp">
       <Filter>M2Win32GUIHelpers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)M2WinRTHelpers.cpp">
+      <Filter>M2WinRTHelpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -43,6 +49,9 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)M2Win32GUIHelpers.h">
       <Filter>M2Win32GUIHelpers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)M2WinRTHelpers.h">
+      <Filter>M2WinRTHelpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
