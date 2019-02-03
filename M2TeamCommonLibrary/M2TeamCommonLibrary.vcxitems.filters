@@ -19,6 +19,9 @@
     <Filter Include="M2BindableVectorView">
       <UniqueIdentifier>{a92727ff-c07e-4599-8317-f845bd196131}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MINT">
+      <UniqueIdentifier>{78390f38-88c8-4b68-8465-c8bab293c8a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)M2CXHelpers.cpp">
@@ -58,6 +61,9 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)M2BindableVectorView.h">
       <Filter>M2BindableVectorView</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MINT.h">
+      <Filter>MINT</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

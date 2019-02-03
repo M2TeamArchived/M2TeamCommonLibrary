@@ -28,6 +28,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)M2Win32GUIHelpers.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)M2Win32Helpers.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)M2WinRTHelpers.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MINT.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="$(MSBuildThisFileDirectory)M2MessageDialogResource.rc" />
