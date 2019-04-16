@@ -13,16 +13,7 @@
 #ifndef _M2_WIN32_GUI_HELPERS_
 #define _M2_WIN32_GUI_HELPERS_
 
-#include <Windows.h>
-
-/**
- * Enables the Per-Monitor DPI Aware for the specified dialog using the
- * internal API from Windows.
- *
- * @return INT. If failed. returns -1.
- * @remarks You need to use this function in Windows 10 Threshold 1 or later.
- */
-INT M2EnablePerMonitorDialogScaling();
+#include "M2WindowsHelpers.h"
 
 /**
  * Creates and shows the message dialog.

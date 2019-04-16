@@ -11,37 +11,9 @@
 #include "stdafx.h"
 
 #include <Windows.h>
-#include <VersionHelpers.h>
 
 #include "M2Win32GUIHelpers.h"
 #include "M2MessageDialogResource.h"
-
-/**
- * Enables the Per-Monitor DPI Aware for the specified dialog using the
- * internal API from Windows.
- *
- * @return INT. If failed. returns -1.
- * @remarks You need to use this function in Windows 10 Threshold 1 or later.
- */
-INT M2EnablePerMonitorDialogScaling()
-{
-    // Fix for Windows Vista and Server 2008.
-    if (!IsWindowsVersionOrGreater(10, 0, 0)) return -1;
-
-    typedef INT(WINAPI *PFN_EnablePerMonitorDialogScaling)();
-
-    HMODULE hModule = nullptr;
-    PFN_EnablePerMonitorDialogScaling pFunc = nullptr;
-
-    hModule = GetModuleHandleW(L"user32.dll");
-    if (!hModule) return -1;
-
-    pFunc = reinterpret_cast<PFN_EnablePerMonitorDialogScaling>(
-        GetProcAddress(hModule, (LPCSTR)2577));
-    if (!pFunc) return -1;
-
-    return pFunc();
-}
 
 /**
  * The parameter struct of the message dialog.
@@ -160,3 +132,5 @@ INT_PTR WINAPI M2MessageDialog(
         M2MessageDialogDialogCallBack,
         reinterpret_cast<LPARAM>(&Param));
 }
+
+

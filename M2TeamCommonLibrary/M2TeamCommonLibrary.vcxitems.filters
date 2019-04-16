@@ -1,23 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="M2CXHelpers">
-      <UniqueIdentifier>{2e4a613e-c7eb-451b-9817-3fee11e49eb9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="M2BaseHelpers">
-      <UniqueIdentifier>{3ddd1c92-1b09-47be-a006-c1cadbbdc688}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="M2Win32Helpers">
-      <UniqueIdentifier>{75df954e-079c-4788-ab4f-c856a74a7e13}</UniqueIdentifier>
-    </Filter>
     <Filter Include="M2Win32GUIHelpers">
       <UniqueIdentifier>{c3376011-3a37-453f-8b61-e247c38d599a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="M2WinRTHelpers">
-      <UniqueIdentifier>{4d531645-d79a-43b5-8917-abeb8cdacf41}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="M2BindableVectorView">
-      <UniqueIdentifier>{a92727ff-c07e-4599-8317-f845bd196131}</UniqueIdentifier>
     </Filter>
     <Filter Include="MINT">
       <UniqueIdentifier>{78390f38-88c8-4b68-8465-c8bab293c8a9}</UniqueIdentifier>
@@ -25,48 +10,27 @@
     <Filter Include="LegacyImplementations">
       <UniqueIdentifier>{3591d6a3-24d5-4139-a102-8b037e3e6ad9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="M2WindowsHelpers">
+      <UniqueIdentifier>{3c38a529-bf06-4caa-bd26-27c27c375f63}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)M2CXHelpers.cpp">
-      <Filter>M2CXHelpers</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)M2BaseHelpers.cpp">
-      <Filter>M2BaseHelpers</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)M2Win32Helpers.cpp">
-      <Filter>M2Win32Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)M2Win32GUIHelpers.cpp">
       <Filter>M2Win32GUIHelpers</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)M2WinRTHelpers.cpp">
-      <Filter>M2WinRTHelpers</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)M2.Base.cpp">
       <Filter>LegacyImplementations</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)M2WindowsHelpers.cpp">
+      <Filter>M2WindowsHelpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="$(MSBuildThisFileDirectory)M2CXHelpers.h">
-      <Filter>M2CXHelpers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)M2BaseHelpers.h">
-      <Filter>M2BaseHelpers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)M2Win32Helpers.h">
-      <Filter>M2Win32Helpers</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)M2MessageDialogResource.h">
       <Filter>M2Win32GUIHelpers</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)M2Win32GUIHelpers.h">
       <Filter>M2Win32GUIHelpers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)M2WinRTHelpers.h">
-      <Filter>M2WinRTHelpers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)M2BindableVectorView.h">
-      <Filter>M2BindableVectorView</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)MINT.h">
       <Filter>MINT</Filter>
@@ -79,6 +43,9 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)M2.SDK.h">
       <Filter>LegacyImplementations</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)M2WindowsHelpers.h">
+      <Filter>M2WindowsHelpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
